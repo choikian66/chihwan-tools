@@ -1,14 +1,20 @@
-import { defineConfig } from 'vite';
+import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 
-export default defineConfig({
-  plugins: [react()],
-  server: {
-    proxy: {
-      '/fde-api': {
-        target: process.env.VITE_API_URL || 'http://localhost:8000',
-        changeOrigin: true,
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, '.', '');
+  const backendUrl = env['VITE_API_URL'] ?? 'http://localhost:8000';
+
+  return {
+    plugins: [react()],
+    server: {
+      proxy: {
+        '/fde-api': { target: backendUrl, changeOrigin: true },
       },
     },
-  },
+    build: {
+      outDir: '../backend/static',
+      emptyOutDir: true,
+    },
+  };
 });
