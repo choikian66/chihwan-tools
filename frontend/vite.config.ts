@@ -12,9 +12,5 @@ export default defineConfig(({ mode }) => {
         '/fde-api': { target: backendUrl, changeOrigin: true },
       },
     },
-    build: {
-      outDir: '../backend/static',
-      emptyOutDir: true,
-    },
   };
 });
